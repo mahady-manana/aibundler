@@ -87,14 +87,14 @@ export async function handleGoogleAuth(token: string, credential?: boolean) {
       await createSession(user.id);
 
       // Return path for new users
-      return "/app/dashboard/onboarding";
+      return "/app/chat/";
     }
 
     // Create session
     await createSession(user.id);
 
     // Return path for existing users
-    return "/app/dashboard";
+    return "/app/chat";
   } catch (error) {
     console.error("Google auth error:", error);
     throw error;
