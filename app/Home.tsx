@@ -91,7 +91,7 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href={`/${locale}/app/chat`}>Try Chat Now</Link>
+                <Link href={`/app/chat`}>Try Chat Now</Link>
               </Button>
             </div>
           </div>
@@ -125,9 +125,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="mb-4">{feature.description}</p>
                 <Button asChild variant="default">
-                  <Link href={`/${locale}${feature.link}`}>
-                    Try {feature.title}
-                  </Link>
+                  <Link href={`${feature.link}`}>Try {feature.title}</Link>
                 </Button>
               </div>
             ))}
