@@ -1,22 +1,39 @@
-import { azureChatAuth } from "@/azure/authentication";
+import { azureCrossModelAuth, readStream } from "@/azure/authentication";
 import { systemInst } from "@/azure/instruction";
 import { verifySession } from "@/services/session/session";
 import { ChatMessage } from "@/types/chat";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export const maxDuration = 60;
-export const POST = async (req: NextRequest, res: any) => {
+
+export const POST = async (req: NextRequest) => {
   try {
+    // Authentication check
     const session = await verifySession();
     if (!session.isAuth || !session.userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-    const body = await readStream(req);
-    const { messages, summary } = body;
 
-    const client = await azureChatAuth();
+    // Parse request body
+    let body;
+    try {
+      body = await readStream(req);
+    } catch (e) {
+      return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const { messages, summary, model } = body;
+    const client = azureCrossModelAuth(model);
+
+    // API request
     const oaiResponse = await client.chat.completions.create({
-      model: "gpt-4.1",
+      model: model || "gpt-o4",
       messages: [
         {
           role: "system",
@@ -24,7 +41,6 @@ export const POST = async (req: NextRequest, res: any) => {
         },
         ...messages.map((m: ChatMessage) => ({ ...m, type: "text" })),
       ],
-      temperature: 0.3,
       stream: true,
       stream_options: { include_usage: true },
     });
@@ -43,7 +59,7 @@ export const POST = async (req: NextRequest, res: any) => {
   } catch (error) {
     console.log(error);
 
-    throw Error("[ERROR: Service interupted]");
+    throw Error("[ERROR: Service interrupted]");
   }
 };
 
@@ -59,19 +75,4 @@ function iteratorToStream(iterator: any) {
       }
     },
   });
-}
-
-async function readStream(req: any) {
-  const reader = req.body.getReader();
-  const decoder = new TextDecoder();
-  let result = "";
-  let done = false;
-
-  while (!done) {
-    const { value, done: readerDone } = await reader.read();
-    done = readerDone;
-    result += decoder.decode(value, { stream: true });
-  }
-
-  return JSON.parse(result);
 }

@@ -1,6 +1,7 @@
 "use client";
 import { AI_MODELS, ModelName } from "@/azure/models";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
+import clsx from "clsx";
 import { ChevronDown, MessagesSquare } from "lucide-react";
 
 export default function ChatHeader() {
@@ -27,6 +28,12 @@ export default function ChatHeader() {
                 key={model.value}
                 value={model.value}
                 disabled={!model.available}
+                className={clsx(
+                  "font-bold ",
+                  !model.available
+                    ? "opacity-30 cursor-not-allowed"
+                    : "text-blue-700"
+                )}
               >
                 {model.name}
               </option>

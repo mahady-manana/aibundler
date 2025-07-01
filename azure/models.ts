@@ -14,9 +14,21 @@ export enum ModelName {
   gpt_o4_mini = "gpt-o4-mini",
   gpt_o4_mini_tts = "gpt-o4-mini-tts",
   DeepSeek_R1 = "DeepSeek-R1",
+  model_router = "model-router",
+  o1 = "o1",
+  gpt_4o = "gpt-4o",
 }
 
 export const AI_MODELS = [
+  {
+    name: "model-router",
+    value: "model-router",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/microsoft.svg",
+    type: "Chat completion",
+    cross: true,
+  },
   {
     name: "gpt-4.1",
     value: "gpt-4.1",
@@ -24,6 +36,7 @@ export const AI_MODELS = [
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Chat completion",
+    cross: true,
   },
   {
     name: "DeepSeek-R1-0528",
@@ -32,6 +45,43 @@ export const AI_MODELS = [
     limit: ModelLimit.standard,
     logo: "/images/models/deepseek.svg",
     type: "Chat completion",
+    cross: true,
+  },
+  {
+    name: "grok-3",
+    value: "grok-3",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/xmodel.svg",
+    type: "Chat completion",
+    cross: true,
+  },
+  {
+    name: "gpt-o1", // => not supporting temperature
+    value: "o1",
+    available: true, // should be true
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Chat completion",
+    cross: true,
+  },
+  {
+    name: "gpt-o4-mini", // => not supporting temperature
+    value: "gpt-o4-mini",
+    available: true, // should be true
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Chat completion",
+    cross: true,
+  },
+  {
+    name: "gpt-o4",
+    value: "gpt-o4",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Chat completion",
+    cross: true,
   },
   {
     name: "gpt-4o-transcribe",
@@ -40,14 +90,6 @@ export const AI_MODELS = [
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Speech to text",
-  },
-  {
-    name: "grok-3",
-    value: "grok-3",
-    available: false,
-    limit: ModelLimit.standard,
-    logo: "/images/models/xmodel.svg",
-    type: "Chat completion",
   },
   {
     name: "Sora",
@@ -63,14 +105,6 @@ export const AI_MODELS = [
     available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/xmodel.svg",
-    type: "Chat completion",
-  },
-  {
-    name: "gpt-o4-mini",
-    value: "gpt-o4-mini",
-    available: false,
-    limit: ModelLimit.standard,
-    logo: "/images/models/openai.svg",
     type: "Chat completion",
   },
   {

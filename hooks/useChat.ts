@@ -88,6 +88,7 @@ export const useChat = () => {
             { role: "user", content: input, type: "text" },
           ],
           summary,
+          model: chatmodel,
         }),
         signal: abortController.signal,
       });
@@ -96,11 +97,9 @@ export const useChat = () => {
       if (!response.ok) {
         try {
           const errorData = await response.json();
-          throw new Error(
-            errorData.error || `Request failed with status ${response.status}`
-          );
+          throw new Error(`[Service interruption]`);
         } catch (e) {
-          throw new Error(`Request failed with status ${response.status}`);
+          throw new Error(`[Service interruption]`);
         }
       }
 
@@ -255,13 +254,17 @@ export const useChat = () => {
 
 const getChatEndpoints = (model: string) => {
   switch (model) {
-    case ModelName.gpt_4_1:
-      return appApiendpoints.chatgpt4_1;
-
     case ModelName.DeepSeek_R1_0528:
       return appApiendpoints.deepseek_r1_0528;
 
+    case ModelName.o1:
+      return appApiendpoints.azure_cross_model_o_serie;
+    case ModelName.gpt_o4_mini:
+      return appApiendpoints.azure_cross_model_o_serie;
+    case ModelName.gpt_4o:
+      return appApiendpoints.azure_cross_model_o_serie;
+
     default:
-      return appApiendpoints.chatgpt4_1;
+      return appApiendpoints.azure_cross_model;
   }
 };
