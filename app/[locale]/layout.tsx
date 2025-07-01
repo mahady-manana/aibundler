@@ -10,8 +10,9 @@ import { Metadata } from "next/types";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Prolika - Made for Talents, Creators and Professionals",
-  description: "Connect with professionals and grow your network",
+  title: "AI Bundler - All AI models in one place by Azespace.com",
+  description:
+    "Choose and use any AI model that make your work smother than ever",
 };
 
 const fonts = Roboto({
