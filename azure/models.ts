@@ -1,0 +1,92 @@
+export enum ModelLimit {
+  free = "FREE",
+  standard = "STANDARD",
+  premium = "PREMIUM",
+}
+
+export enum ModelName {
+  gpt_4_1 = "gpt-4.1",
+  DeepSeek_R1_0528 = "DeepSeek-R1-0528",
+  gpt_4o_transcribe = "gpt-4o-transcribe",
+  grok_3 = "grok-3",
+  Sora = "Sora",
+  grok_3_mini = "grok-3-mini",
+  gpt_o4_mini = "gpt-o4-mini",
+  gpt_o4_mini_tts = "gpt-o4-mini-tts",
+  DeepSeek_R1 = "DeepSeek-R1",
+}
+
+export const AI_MODELS = [
+  {
+    name: "gpt-4.1",
+    value: "gpt-4.1",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Chat completion",
+  },
+  {
+    name: "DeepSeek-R1-0528",
+    value: "deepseek-r1-0528",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/deepseek.svg",
+    type: "Chat completion",
+  },
+  {
+    name: "gpt-4o-transcribe",
+    value: "gpt-4.1",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Speech to text",
+  },
+  {
+    name: "grok-3",
+    value: "grok-3",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/xmodel.svg",
+    type: "Chat completion",
+  },
+  {
+    name: "Sora",
+    value: "sora",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Video generation",
+  },
+  {
+    name: "grok-3-mini",
+    value: "grok-3-mini",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/xmodel.svg",
+    type: "Chat completion",
+  },
+  {
+    name: "gpt-o4-mini",
+    value: "gpt-o4-mini",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Chat completion",
+  },
+  {
+    name: "gpt-o4-mini-tts",
+    value: "gpt-o4-mini-tss",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/openai.svg",
+    type: "Text to speech",
+  },
+  {
+    name: "DeepSeek-R1",
+    value: "deepseek-r1",
+    available: true,
+    limit: ModelLimit.standard,
+    logo: "/images/models/deepseek.svg",
+    type: "Chat completion",
+  },
+];
