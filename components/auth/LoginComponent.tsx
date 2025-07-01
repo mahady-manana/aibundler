@@ -35,7 +35,7 @@ export const LoginButton: FC<LoginComponentProps> = ({ isLogin = true }) => {
       >
         {isLogin ? "Login" : "Sign Up free"}
       </DialogTrigger>
-      <DialogContent className="bg-white border-2 py-10 border-primary">
+      <DialogContent className="bg-white text-neutral-700 border-2 py-10 border-primary">
         <div className="max-w-[450px] mx-auto w-full rounded-md">
           <div className="py-4 space-y-4">
             <DialogTitle className="font-bold text-center text-xl">
@@ -59,13 +59,13 @@ export const LoginButton: FC<LoginComponentProps> = ({ isLogin = true }) => {
             <TabsList className="flex shrink-0 border-b-1 border-gray-300 rounded-none mb-6">
               <TabsTrigger
                 value="login"
-                className="flex h-[38px] flex-1 rounded-none cursor-pointer select-none items-center justify-center  px-5 text-[15px] data-[state=active]:text-primary  data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                className="flex h-[38px] flex-1 rounded-none cursor-pointer select-none items-center justify-center  px-5 text-[15px] data-[state=active]:bg-gray-200  data-[state=active]:text-gray-700 data-[state=active]:border-primary"
               >
                 Sign In
               </TabsTrigger>
               <TabsTrigger
                 value="signup"
-                className="flex h-[38px] flex-1 rounded-none cursor-pointer select-none items-center justify-center  px-5 text-[15px] data-[state=active]:text-primary  data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                className="flex h-[38px] flex-1 rounded-none cursor-pointer select-none items-center justify-center  px-5 text-[15px] data-[state=active]:bg-gray-200  data-[state=active]:text-gray-700 data-[state=active]:border-primary"
               >
                 Create account
               </TabsTrigger>

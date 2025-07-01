@@ -10,7 +10,7 @@ export const SignupForm = () => {
   const [state, formAction, pending] = useActionState(signup, null);
   return (
     <div>
-      <form className="space-y-4" action={formAction}>
+      <form className="space-y-4 text-neutral-700" action={formAction}>
         <Label htmlFor="semail">Email</Label>
         <Input
           id="semail"

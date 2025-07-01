@@ -11,7 +11,7 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <form className="space-y-4" action={formAction}>
+      <form className="space-y-4 text-neutral-700" action={formAction}>
         <Label htmlFor="lemail">Email</Label>
         <Input
           id="lemail"

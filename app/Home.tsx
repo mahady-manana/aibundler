@@ -73,7 +73,7 @@ export default function HomePage() {
         <section className="text-center space-y-6">
           <div className=" max-w-2xl mx-auto space-y-6">
             <h1 className="text-xl md:text-3xl font-bold tracking-tight">
-              Choose and Use any AI Models
+              All AI Models in one place just for you
             </h1>
             <p className="text-lg">
               Instantly access Chat, Image Generation, Video Creation, Text to

@@ -1,7 +1,9 @@
 "use client";
 import ChatList from "@/components/shared/ChatList";
+import { logout } from "@/services/auth/logout";
 import {
   Image,
+  LucideLogOut,
   MessagesSquare,
   MoreHorizontal,
   Sparkles,
@@ -9,9 +11,10 @@ import {
   Volume2,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { ModeToggle } from "../mode-toggle";
+import { Button } from "../ui/button";
 
 interface SidebarProps {
   activePage?: string;
@@ -21,7 +24,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
   const pathname = usePathname();
   // Extract the current page from the pathname (e.g., /en/chat -> chat)
   const current = pathname.split("/")[2] || "";
-
+  const { push } = useRouter();
   const menuItems = [
     { id: "chat", label: "Chat", icon: MessagesSquare, href: `/app/chat` },
     { id: "image", label: "Create Image", icon: Image, href: `/app/image` },
@@ -50,6 +53,11 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
       href: `/app/more`,
     },
   ];
+
+  const handleLogout = async () => {
+    await logout();
+    push("/");
+  };
 
   return (
     <div className="lg:block hidden w-60 dark:bg-background bg-white flex flex-col h-full shadow-sm border-r dark:border-none border-gray-200">
@@ -94,8 +102,16 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
         </div>
       </nav>
       <ChatList />
-      <div className="fixed bottom-4 left-4">
+      <div className="fixed flex flex-col gap-2 bottom-4 left-4">
         <ModeToggle></ModeToggle>
+        <Button
+          variant="neutral"
+          size="icon"
+          className="bg-background2"
+          onClick={handleLogout}
+        >
+          <LucideLogOut></LucideLogOut>
+        </Button>
       </div>
     </div>
   );
