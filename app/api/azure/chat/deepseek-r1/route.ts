@@ -17,8 +17,27 @@ export const POST = async (req: NextRequest, res: any) => {
 
     const client = azureDeepSeekAuth();
 
-    let response = await client
-      .path("chat/completions")
+    // let response = await client
+    //   .path("chat/completions")
+    //   .post({
+    //     body: {
+    //       messages: [
+    //         {
+    //           role: "system",
+    //           content: systemInst(summary),
+    //         },
+    //         ...messages.map((m: ChatMessage) => ({ ...m, type: "text" })),
+    //       ],
+    //       max_tokens: 1000,
+    //       model: "DeepSeek-R1-0528",
+    //       stream: true,
+    //       response_format: { type: "text" },
+    //       temperature: 0.3,
+    //     },
+    //   })
+    //   .asNodeStream();
+    const response = await client
+      .path("/chat/completions")
       .post({
         body: {
           messages: [
@@ -26,12 +45,13 @@ export const POST = async (req: NextRequest, res: any) => {
               role: "system",
               content: systemInst(summary),
             },
-            ...messages.map((m: ChatMessage) => ({ ...m, type: "text" })),
+            ...messages.map((m: ChatMessage) => ({
+              ...m,
+              content: m.content || "",
+            })),
           ],
-          max_tokens: 1000,
           model: "DeepSeek-R1-0528",
           stream: true,
-          response_format: { type: "text" },
           temperature: 0.3,
         },
       })

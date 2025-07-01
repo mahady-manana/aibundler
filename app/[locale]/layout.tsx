@@ -18,6 +18,7 @@ const fonts = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "600", "700", "900"],
   variable: "--font-main",
+  display: "swap",
 });
 export default async function RootLayout({
   children,
