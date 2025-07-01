@@ -51,7 +51,7 @@ export const DELETE = async (request: Request) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const data = await request.json();
-    const { messages, chatId, summary } = data;
+    const { chatId } = data;
     const saveChat = await prisma.chat.delete({
       where: { id: chatId },
     });

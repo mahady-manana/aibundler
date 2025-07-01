@@ -23,14 +23,19 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
   const current = pathname.split("/")[2] || "";
 
   const menuItems = [
-    { id: "chat", label: "Chat", icon: MessagesSquare, href: `./chat` },
-    { id: "image", label: "Create Image", icon: Image, href: `./image` },
-    { id: "video", label: "Create Short Video", icon: Video, href: `./video` },
+    { id: "chat", label: "Chat", icon: MessagesSquare, href: `/app/chat` },
+    { id: "image", label: "Create Image", icon: Image, href: `/app/image` },
+    {
+      id: "video",
+      label: "Create Short Video",
+      icon: Video,
+      href: `/app/video`,
+    },
     {
       id: "tts",
       label: "Text to Speech",
       icon: Volume2,
-      href: `./text-to-speech`,
+      href: `/app/text-to-speech`,
     },
     // {
     //   id: "stt",
@@ -42,7 +47,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
       id: "more",
       label: "More AI Tools",
       icon: MoreHorizontal,
-      href: `./more`,
+      href: `/app/more`,
     },
   ];
 

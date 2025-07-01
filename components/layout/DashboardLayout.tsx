@@ -1,9 +1,16 @@
-import { FC, ReactNode } from "react";
+"use client";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useUserInfo } from "@/hooks/useUser";
+import { FC, ReactNode, useEffect } from "react";
 import Sidebar from "./SidebarLeft";
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
+  const { loadUser } = useUserInfo();
+  useEffect(() => {
+    loadUser();
+  }, []);
   return (
     <div className="flex h-screen bg-background2 text-foreground">
       <Sidebar activePage="dashboard" />

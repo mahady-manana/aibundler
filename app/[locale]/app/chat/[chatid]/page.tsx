@@ -6,5 +6,9 @@ export default async function Chat({
   params: Promise<{ chatid: string }>;
 }) {
   const id = (await params).chatid;
-  return <ChatPage chatId={id}></ChatPage>;
+  return (
+    <>
+      <ChatPage chatId={id}></ChatPage>
+    </>
+  );
 }

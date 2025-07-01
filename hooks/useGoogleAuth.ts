@@ -7,13 +7,11 @@ export function useGoogleAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         setIsLoading(true);
         setError(null);
-        console.log(tokenResponse);
 
         const redirectPath = await handleGoogleAuth(tokenResponse.access_token);
         router.push(redirectPath);

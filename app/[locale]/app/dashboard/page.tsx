@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement } from "react";
-import { LoadDashboardData } from "./LoadDashboardData";
+import NewChatPage from "../chat/NewChat";
 
 const profile = {
   name: "John Smith",
@@ -212,5 +212,5 @@ const initialStats: Stat[] = [
 ];
 
 export default function DashboardPage() {
-  return <LoadDashboardData></LoadDashboardData>;
+  return <NewChatPage />;
 }

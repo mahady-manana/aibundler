@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useChat } from "@/hooks/useChat";
 import { LoaderCircle } from "lucide-react";

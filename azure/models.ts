@@ -27,7 +27,7 @@ export const AI_MODELS = [
   },
   {
     name: "DeepSeek-R1-0528",
-    value: "deepseek-r1-0528",
+    value: "DeepSeek-R1-0528",
     available: true,
     limit: ModelLimit.standard,
     logo: "/images/models/deepseek.svg",
@@ -35,8 +35,8 @@ export const AI_MODELS = [
   },
   {
     name: "gpt-4o-transcribe",
-    value: "gpt-4.1",
-    available: true,
+    value: "gpt-4o-transcribe",
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Speech to text",
@@ -44,7 +44,7 @@ export const AI_MODELS = [
   {
     name: "grok-3",
     value: "grok-3",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/xmodel.svg",
     type: "Chat completion",
@@ -52,7 +52,7 @@ export const AI_MODELS = [
   {
     name: "Sora",
     value: "sora",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Video generation",
@@ -60,7 +60,7 @@ export const AI_MODELS = [
   {
     name: "grok-3-mini",
     value: "grok-3-mini",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/xmodel.svg",
     type: "Chat completion",
@@ -68,7 +68,7 @@ export const AI_MODELS = [
   {
     name: "gpt-o4-mini",
     value: "gpt-o4-mini",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Chat completion",
@@ -76,7 +76,7 @@ export const AI_MODELS = [
   {
     name: "gpt-o4-mini-tts",
     value: "gpt-o4-mini-tss",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/openai.svg",
     type: "Text to speech",
@@ -84,7 +84,7 @@ export const AI_MODELS = [
   {
     name: "DeepSeek-R1",
     value: "deepseek-r1",
-    available: true,
+    available: false,
     limit: ModelLimit.standard,
     logo: "/images/models/deepseek.svg",
     type: "Chat completion",

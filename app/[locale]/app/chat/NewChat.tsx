@@ -1,7 +1,9 @@
 "use client";
+import { AI_MODELS } from "@/azure/models";
+import ChatHeader from "@/components/chat/ChatHeader";
 import { useNewChat } from "@/hooks/useNewChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
-import { ChevronDown, MessagesSquare, Sparkles } from "lucide-react";
+import { ChevronDown, Sparkles } from "lucide-react";
 import { useRef, useState } from "react";
 
 const customPreStyle = {
@@ -32,34 +34,7 @@ export default function NewChatPage() {
   return (
     <div className="flex flex-col h-full rounded-xl pb-8 shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 px-6 py-4 border-b border-gray-300">
-        <MessagesSquare className="h-7 w-7 text-blue-500" />
-        <h1 className="lg:text-xl text-md font-bold text-blue-700">Chat</h1>
-        <div className="flex items-center justify-end px-6 py-2">
-          <label
-            htmlFor="model-select"
-            className="mr-2 text-sm font-medium text-blue-700"
-          >
-            Model:
-          </label>
-          <div className="relative">
-            <select
-              id="model-select"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8 text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              {OPENAI_MODELS.map((model) => (
-                <option key={model.value} value={model.value}>
-                  {model.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
-          </div>
-        </div>
-      </div>
-
+      <ChatHeader></ChatHeader>
       <div className="px-4 overflow-y-auto">
         <div className="max-w-3xl mx-auto text-center flex-1  px-4 py-6 space-y-4">
           <div>
@@ -87,9 +62,13 @@ export default function NewChatPage() {
                 onChange={(e) => setSelectedModel(e.target.value)}
                 className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8  text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
               >
-                {OPENAI_MODELS.map((model) => (
-                  <option key={model.value} value={model.value}>
-                    {model.label}
+                {AI_MODELS.map((model) => (
+                  <option
+                    key={model.value}
+                    value={model.value}
+                    disabled={!model.available}
+                  >
+                    {model.name}
                   </option>
                 ))}
               </select>
@@ -97,7 +76,7 @@ export default function NewChatPage() {
             </div>
           </div>
           <button
-            className="font-bold text-lg p-4 border rounded-full px-10 bg-secondary border-golden"
+            className="font-bold text-lg p-4 border rounded-full px-10 bg-primary text-white border-golden"
             onClick={handleCreate}
           >
             Start New Chat

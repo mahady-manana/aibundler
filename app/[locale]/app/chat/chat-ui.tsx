@@ -1,5 +1,6 @@
 "use client";
-import { ModelName } from "@/azure/models";
+import { AI_MODELS } from "@/azure/models";
+import ChatHeader from "@/components/chat/ChatHeader";
 import { useChat } from "@/hooks/useChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 import {
@@ -8,11 +9,10 @@ import {
   ChevronDown,
   Copy,
   LoaderCircle,
-  MessagesSquare,
   Send,
   Sparkles,
 } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighterPrisma } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -20,6 +20,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { LoadChat } from "./[chatid]/LoadChat";
+import ChatErrorBounder from "./ChatErrorBoundary";
+import ChatItem from "./ChatItems";
 
 const customPreStyle = {
   boxShadow: `0px 1px 2px 1px var(--color-background)`, // Add a border
@@ -44,11 +46,11 @@ export default function ChatPage({ chatId }: NewChatProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatmodel = useChatMessageStore((s) => s.chatmodel);
   const updateChatModel = useChatMessageStore((s) => s.updateChatModel);
-
   const messages = useChatMessageStore((s) => s.messages);
   const loading = useChatMessageStore((s) => s.loading);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesStartRef = useRef<HTMLDivElement>(null);
+  const [noChat, setNoChat] = useState(false);
   const { streamedChat, chat } = useChat();
 
   const handleSend = async (e: React.FormEvent) => {
@@ -97,39 +99,22 @@ export default function ChatPage({ chatId }: NewChatProps) {
     });
   };
 
+  useEffect(() => {
+    if (!Boolean(chat) && !messages.length) {
+      setNoChat(true);
+    }
+  }, [Boolean(chat), messages.length]);
+
   return (
     <div className="flex flex-col h-full pb-8 shadow-lg overflow-hidden dark:bg-background2 bg-white">
       {/* Header */}
-      <div className="flex items-center dark:bg-background3 justify-between gap-3 px-6 py-2 shadow">
-        <MessagesSquare className="h-5 w-5" />
-        <h1 className="lg:text-xl text-md font-bold">Chat</h1>
-        <div className="flex items-center justify-end px-6">
-          <label htmlFor="model-select" className="mr-2 text-sm font-medium">
-            Model:
-          </label>
-          <div className="relative">
-            <select
-              id="model-select"
-              value={chatmodel || ModelName.gpt_4_1}
-              onChange={(e) => updateChatModel(e.target.value)}
-              className="text-sm bg-white text-gray-500 appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              {Object.values(ModelName).map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
-          </div>
-        </div>
-      </div>
+      <ChatHeader></ChatHeader>
       {/* Model Selector */}
 
       {/* Messages */}
       <div className="px-4 overflow-y-auto relative">
         <div className="max-w-3xl mx-auto flex-1  px-4 py-6 space-y-4 relative">
-          {!chat && !messages.length ? (
+          {noChat ? (
             <div>
               <div className="flex items-center py-4">
                 <div className="flex items-end pr-8">
@@ -140,6 +125,33 @@ export default function ChatPage({ chatId }: NewChatProps) {
                 </p>
               </div>
               <p>AI can and will make mistakes. Check important info.</p>
+              <div className="flex items-center  py-4">
+                <label
+                  htmlFor="model-select"
+                  className="mr-2 text-sm font-medium text-blue-700"
+                >
+                  Model:
+                </label>
+                <div className="relative">
+                  <select
+                    id="model-select"
+                    value={chatmodel || "gpt-4.1"}
+                    onChange={(e) => updateChatModel(e.target.value)}
+                    className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8  text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  >
+                    {AI_MODELS.map((model) => (
+                      <option
+                        key={model.value}
+                        value={model.value}
+                        disabled={!model.available}
+                      >
+                        {model.name}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+                </div>
+              </div>
             </div>
           ) : null}
           <LoadChat chatId={chatId}></LoadChat>
@@ -150,73 +162,7 @@ export default function ChatPage({ chatId }: NewChatProps) {
             <div ref={messagesStartRef} />
             {messages.length
               ? messages.map((message, index) => {
-                  return message.role === "user" ? (
-                    <div
-                      key={index}
-                      className="bg-background3 max-w-2/3 ml-auto p-4 rounded-md"
-                    >
-                      <p>{message.content}</p>
-                    </div>
-                  ) : (
-                    <div
-                      key={index}
-                      className="markdown-content prose py-4 space-y-4"
-                    >
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        components={{
-                          code(props) {
-                            const { children, className, node, ...rest } =
-                              props;
-                            const match = /language-(\w+)/.exec(
-                              className || ""
-                            );
-
-                            return (
-                              <span className="relative">
-                                {match ? (
-                                  <>
-                                    <SyntaxHighlighter
-                                      {...rest}
-                                      PreTag="div"
-                                      language={match[1]}
-                                      style={vscDarkPlus}
-                                      customStyle={customPreStyle}
-                                    >
-                                      {String(children).replace(/\n$/, "")}
-                                    </SyntaxHighlighter>
-                                    <button
-                                      onClick={() =>
-                                        handleCopy(String(children))
-                                      }
-                                      className="flex items-center gap-1 cursor-pointer absolute z-50 text-gray-300 text-xs top-1 right-2 p-1 rounded-md "
-                                    >
-                                      <Copy className="w-4 h-4"></Copy>{" "}
-                                      <span>copy</span>
-                                    </button>
-                                  </>
-                                ) : (
-                                  <code {...rest} className={className}>
-                                    {children}
-                                  </code>
-                                )}
-                              </span>
-                            );
-                          },
-                          a: ({ node, ...props }) => (
-                            <a
-                              {...props}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            />
-                          ),
-                        }}
-                      >
-                        {message.content}
-                      </ReactMarkdown>
-                    </div>
-                  );
+                  return <ChatItem key={index} message={message}></ChatItem>;
                 })
               : null}
 
@@ -227,54 +173,55 @@ export default function ChatPage({ chatId }: NewChatProps) {
                 </div>
 
                 <div className="markdown-content prose py-4 space-y-4">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    components={{
-                      code(props) {
-                        const { children, className, node, ...rest } = props;
-                        const match = /language-(\w+)/.exec(className || "");
-                        console.log(props);
+                  <ChatErrorBounder>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                      components={{
+                        code(props) {
+                          const { children, className, node, ...rest } = props;
+                          const match = /language-(\w+)/.exec(className || "");
 
-                        return (
-                          <span className="relative">
-                            {match ? (
-                              <>
-                                <SyntaxHighlighter
-                                  {...rest}
-                                  PreTag="div"
-                                  language={match[1]}
-                                  style={vscDarkPlus}
-                                  customStyle={customPreStyle}
-                                >
-                                  {String(children).replace(/\n$/, "")}
-                                </SyntaxHighlighter>
-                                <button
-                                  onClick={() => handleCopy(String(children))}
-                                  className="w-6 h-6 cursor-pointer absolute z-50 top-4 right-4 bg-white text-neutral-700 p-1 rounded-md "
-                                >
-                                  <Copy className="w-4 h-4"></Copy>{" "}
-                                </button>
-                              </>
-                            ) : (
-                              <code {...rest} className={className}>
-                                {children}
-                              </code>
-                            )}
-                          </span>
-                        );
-                      },
-                      a: ({ node, ...props }) => (
-                        <a
-                          {...props}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        />
-                      ),
-                    }}
-                  >
-                    {chat}
-                  </ReactMarkdown>
+                          return (
+                            <span className="relative">
+                              {match ? (
+                                <>
+                                  <SyntaxHighlighter
+                                    {...rest}
+                                    PreTag="div"
+                                    language={match[1]}
+                                    style={vscDarkPlus}
+                                    customStyle={customPreStyle}
+                                  >
+                                    {String(children).replace(/\n$/, "")}
+                                  </SyntaxHighlighter>
+                                  <span
+                                    onClick={() => handleCopy(String(children))}
+                                    className="w-6 h-6 cursor-pointer absolute z-50 top-4 right-4 bg-white text-neutral-700 p-1 rounded-md "
+                                  >
+                                    <Copy className="w-4 h-4"></Copy>{" "}
+                                  </span>
+                                </>
+                              ) : (
+                                <code {...rest} className={className}>
+                                  {children}
+                                </code>
+                              )}
+                            </span>
+                          );
+                        },
+                        a: ({ node, ...props }) => (
+                          <a
+                            {...props}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          />
+                        ),
+                      }}
+                    >
+                      {chat}
+                    </ReactMarkdown>
+                  </ChatErrorBounder>
                 </div>
               </>
             ) : null}
