@@ -13,7 +13,7 @@ export const POST = async (request: Request) => {
     const saveChat = await prisma.chat.create({
       data: {
         userId: userId,
-        name: "New Chat",
+        name: "",
       },
     });
     return NextResponse.json(saveChat);
@@ -31,12 +31,13 @@ export const PUT = async (request: Request) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const data = await request.json();
-    const { messages, chatId, summary } = data;
+    const { messages, chatId, summary, name } = data;
     const saveChat = await prisma.chat.update({
       where: { id: chatId },
       data: {
         messages: messages,
         summary: summary,
+        name: name,
       },
     });
     return NextResponse.json(saveChat);

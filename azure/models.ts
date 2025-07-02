@@ -21,7 +21,7 @@ export enum ModelName {
 
 export const AI_MODELS = [
   {
-    name: "model-router",
+    name: "Model Router",
     value: "model-router",
     available: true,
     limit: ModelLimit.standard,
@@ -30,7 +30,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "gpt-4.1",
+    name: "GPT 4.1",
     value: "gpt-4.1",
     available: true,
     limit: ModelLimit.standard,
@@ -39,7 +39,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "DeepSeek-R1-0528",
+    name: "DeepSeek R1-0528",
     value: "DeepSeek-R1-0528",
     available: true,
     limit: ModelLimit.standard,
@@ -48,7 +48,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "grok-3",
+    name: "Grok 3",
     value: "grok-3",
     available: true,
     limit: ModelLimit.standard,
@@ -57,7 +57,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "gpt-o1", // => not supporting temperature
+    name: "GPT o1", // => not supporting temperature
     value: "o1",
     available: true, // should be true
     limit: ModelLimit.standard,
@@ -66,7 +66,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "gpt-o4-mini", // => not supporting temperature
+    name: "GPT o4-mini", // => not supporting temperature
     value: "gpt-o4-mini",
     available: true, // should be true
     limit: ModelLimit.standard,
@@ -75,7 +75,7 @@ export const AI_MODELS = [
     cross: true,
   },
   {
-    name: "gpt-o4",
+    name: "GPT o4",
     value: "gpt-o4",
     available: true,
     limit: ModelLimit.standard,

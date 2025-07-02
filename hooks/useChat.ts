@@ -3,6 +3,7 @@ import { ModelName } from "@/azure/models";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 import { ChatMessage } from "@/types/chat";
 import { useState } from "react";
+import { useChatList } from "./useChatList";
 export const useChat = () => {
   const [chat, setChat] = useState("");
   const [loadingChat, setLoadingChat] = useState<boolean>(false);
@@ -12,6 +13,8 @@ export const useChat = () => {
   const updateSummary = useChatMessageStore((s) => s.updateSummary);
   const messages = useChatMessageStore((s) => s.messages);
   const summary = useChatMessageStore((s) => s.summary);
+  const chatList = useChatMessageStore((s) => s.chatLit);
+  const { loadChatList } = useChatList();
   const streamedChat = async (input: string, chatId: string) => {
     // try {
     //   setLoading(true);
@@ -143,14 +146,24 @@ export const useChat = () => {
 
         updatesChatStore(allMessages);
 
-        if (allMessages.filter((m) => !m.summarized).length > 4) {
+        if (allMessages.filter((m) => !m.summarized).length > 10) {
           summarizeGpt(allMessages, chatId);
         } else {
-          updateCurrentChat({
-            summary,
-            id: chatId,
-            messages: allMessages.map((m) => ({ ...m, summarized: undefined })),
-          });
+          const currentName = chatList.find((m) => m.id === chatId)?.name;
+          if (!currentName && allMessages.length > 4) {
+            await createChatName(allMessages, chatId, summary);
+
+            return;
+          } else {
+            updateCurrentChat({
+              summary,
+              id: chatId,
+              messages: allMessages.map((m) => ({
+                ...m,
+                summarized: undefined,
+              })),
+            });
+          }
         }
       }
 
@@ -185,7 +198,6 @@ export const useChat = () => {
     const json = await response.json();
     if (json?.summary) {
       updateSummary(json.summary);
-      updatesChatStore(messagesInput.map((m) => ({ ...m, summarized: true })));
       updateCurrentChat({
         summary: json.summary,
         messages: [
@@ -196,6 +208,51 @@ export const useChat = () => {
         ],
         id: id,
       });
+    }
+  };
+
+  const createChatName = async (
+    messagesInput: ChatMessage[],
+    id: string,
+    summary?: string
+  ) => {
+    const response = await fetch("/api/azure/chat/create-chat-name", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [
+          ...messagesInput.map((m) => {
+            delete m.summarized;
+            return m;
+          }),
+        ],
+        id: id,
+        summary: summary,
+      }),
+    });
+
+    const json = await response.json();
+    if (json?.title) {
+      await fetch("/api/user/chat/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [
+            ...messagesInput.map((m) => {
+              delete m.summarized;
+              return m;
+            }),
+          ],
+          chatId: id,
+          summary: summary,
+          name: json.title,
+        }),
+      });
+      loadChatList();
     }
   };
 
@@ -224,10 +281,12 @@ export const useChat = () => {
     messages,
     id,
     summary,
+    name,
   }: {
     messages: ChatMessage[];
     id: string;
     summary: string;
+    name?: string;
   }) => {
     setLoadingChat(true);
     const response = await fetch("/api/user/chat", {
@@ -239,6 +298,7 @@ export const useChat = () => {
         messages: messages,
         summary: summary,
         chatId: id,
+        name,
       }),
     });
     await response.json();

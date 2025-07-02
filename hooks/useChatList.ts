@@ -1,7 +1,6 @@
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 
 export const useChatList = () => {
-  const chatlist = useChatMessageStore((s) => s.chatLit);
   const updateChatList = useChatMessageStore((s) => s.updateChatList);
 
   const loadChatList = async () => {

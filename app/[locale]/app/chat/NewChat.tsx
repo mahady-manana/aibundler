@@ -3,6 +3,7 @@ import { AI_MODELS } from "@/azure/models";
 import ChatHeader from "@/components/chat/ChatHeader";
 import { useNewChat } from "@/hooks/useNewChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
+import clsx from "clsx";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -49,10 +50,7 @@ export default function NewChatPage() {
             <p>AI can and will make mistakes. Check important info.</p>
           </div>
           <div className="flex items-center justify-center py-2">
-            <label
-              htmlFor="model-select"
-              className="mr-2 text-sm font-medium text-blue-700"
-            >
+            <label htmlFor="model-select" className="mr-2 text-sm font-medium">
               Model:
             </label>
             <div className="relative">
@@ -60,13 +58,19 @@ export default function NewChatPage() {
                 id="model-select"
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8  text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
               >
                 {AI_MODELS.map((model) => (
                   <option
                     key={model.value}
                     value={model.value}
                     disabled={!model.available}
+                    className={clsx(
+                      "font-bold ",
+                      !model.available
+                        ? "opacity-30 cursor-not-allowed"
+                        : "text-blue-700"
+                    )}
                   >
                     {model.name}
                   </option>
@@ -76,7 +80,7 @@ export default function NewChatPage() {
             </div>
           </div>
           <button
-            className="font-bold text-lg p-4 border rounded-full px-10 bg-primary text-white border-golden"
+            className="font-bold cursor-pointer text-lg p-4 rounded-full px-10 bg-primary text-white shadow-xl"
             onClick={handleCreate}
           >
             Start New Chat

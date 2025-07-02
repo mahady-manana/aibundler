@@ -63,14 +63,16 @@ const ChatList: React.FC = () => {
               className="group flex  items-center cursor-pointer transition-colors"
             >
               <Link
-                className="px-4 block py-1 rounded-lg flex-1"
+                className="px-4 block py-1 rounded-lg w-[calc(100%-30px)] overflow-hidden"
                 // Placeholder for navigation
                 href={"/app/chat/" + chat.id}
               >
-                <span className="font-medium truncate">{chat.name}</span>
+                <span className="font-medium truncate">
+                  {chat.name || "New chat"}
+                </span>
               </Link>
               <button
-                className="opacity-0 group-hover:opacity-100 cursor-pointer"
+                className="w-[30px] flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer"
                 onClick={() => {
                   console.log(chat);
 

@@ -16,6 +16,9 @@ export const GET = async (request: NextRequest) => {
         updatedAt: true,
         createdAt: true,
       },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
     return NextResponse.json(saveChat);
   } catch (error) {

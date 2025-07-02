@@ -1,6 +1,7 @@
 "use client";
 import ChatList from "@/components/shared/ChatList";
 import { logout } from "@/services/auth/logout";
+import clsx from "clsx";
 import {
   Image,
   LucideLogOut,
@@ -26,7 +27,13 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
   const current = pathname.split("/")[2] || "";
   const { push } = useRouter();
   const menuItems = [
-    { id: "chat", label: "Chat", icon: MessagesSquare, href: `/app/chat` },
+    {
+      id: "chat",
+      label: "Chat",
+      icon: MessagesSquare,
+      href: `/app/chat`,
+      available: true,
+    },
     { id: "image", label: "Create Image", icon: Image, href: `/app/image` },
     {
       id: "video",
@@ -60,7 +67,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
   };
 
   return (
-    <div className="lg:block hidden w-60 dark:bg-background bg-white flex flex-col h-full shadow-sm border-r dark:border-none border-gray-200">
+    <div className="lg:block hidden w-65 dark:bg-background bg-white flex flex-col h-full shadow-sm border-r dark:border-none border-gray-200">
       {/* Logo */}
       <div className="p-6">
         <Link href="/" className="flex items-center space-x-3">
@@ -84,11 +91,16 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
               <Link
                 key={item.id}
                 href={item.href}
-                className={`w-full flex items-center px-4 py-1 rounded-md text-left transition-all duration-200 group no-underline ${
-                  isActive
-                    ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
-                    : "hover:bg-background2"
-                }`}
+                className={clsx(
+                  `w-full relative flex items-center px-4 py-1 rounded-md text-left transition-all duration-200 group no-underline ${
+                    isActive
+                      ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
+                      : "hover:bg-background2"
+                  }`,
+                  !item.available
+                    ? "opacity-30 cursor-not-allowed pointer-events-none"
+                    : ""
+                )}
               >
                 <Icon
                   className={`w-5 h-5 mr-3 transition-colors duration-200 ${
@@ -96,6 +108,11 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
                   }`}
                 />
                 <span>{item.label}</span>
+                {!item.available ? (
+                  <span className="absolute right-0 top-1 text-blue-400 text-xs">
+                    (soon)
+                  </span>
+                ) : null}
               </Link>
             );
           })}

@@ -10,8 +10,9 @@ export default function ChatHeader() {
 
   return (
     <div className="flex items-center dark:bg-background3 justify-between gap-3 px-6 py-2 shadow">
-      <MessagesSquare className="h-5 w-5" />
-      <h1 className="lg:text-xl text-md font-bold">Chat</h1>
+      <h1 className="lg:text-xl flex items-center gap-4 text-md font-bold">
+        <MessagesSquare className="h-5 w-5" /> <span>Chat</span>
+      </h1>
       <div className="flex items-center justify-end px-6">
         <label htmlFor="model-select" className="mr-2 text-sm font-medium">
           Model:
