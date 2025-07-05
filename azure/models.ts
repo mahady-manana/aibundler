@@ -52,7 +52,7 @@ export const AI_MODELS = [
     value: "grok-3",
     available: true,
     limit: ModelLimit.standard,
-    logo: "/images/models/xmodel.svg",
+    logo: "/images/models/grok.svg",
     type: "Chat completion",
     cross: true,
   },
@@ -104,7 +104,7 @@ export const AI_MODELS = [
     value: "grok-3-mini",
     available: false,
     limit: ModelLimit.standard,
-    logo: "/images/models/xmodel.svg",
+    logo: "/images/models/grok.svg",
     type: "Chat completion",
   },
   {

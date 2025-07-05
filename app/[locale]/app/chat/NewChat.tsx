@@ -1,11 +1,9 @@
 "use client";
-import { AI_MODELS } from "@/azure/models";
 import ChatHeader from "@/components/chat/ChatHeader";
+import { ChooseModel } from "@/components/elements/ChooseModel";
 import { useNewChat } from "@/hooks/useNewChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
-import clsx from "clsx";
 import { ChevronDown, Sparkles } from "lucide-react";
-import { useRef, useState } from "react";
 
 const customPreStyle = {
   border: "1px solid #ccc", // Add a border
@@ -20,12 +18,7 @@ const OPENAI_MODELS = [
 ];
 
 export default function NewChatPage() {
-  const [input, setInput] = useState("");
-  const formRef = useRef<HTMLFormElement>(null);
-  const [selectedModel, setSelectedModel] = useState(OPENAI_MODELS[0].value);
-  const messages = useChatMessageStore((s) => s.messages);
-  const loading = useChatMessageStore((s) => s.loading);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatmodel = useChatMessageStore((s) => s.chatmodel);
   const { createChat } = useNewChat();
 
   const handleCreate = async () => {
@@ -49,42 +42,27 @@ export default function NewChatPage() {
             </div>
             <p>AI can and will make mistakes. Check important info.</p>
           </div>
-          <div className="flex items-center justify-center py-2">
-            <label htmlFor="model-select" className="mr-2 text-sm font-medium">
-              Model:
-            </label>
+          <div className="inline-flex items-center  py-4">
+            <p className="mr-2 text-sm font-medium text-blue-700">Model:</p>
             <div className="relative">
-              <select
-                id="model-select"
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
-              >
-                {AI_MODELS.map((model) => (
-                  <option
-                    key={model.value}
-                    value={model.value}
-                    disabled={!model.available}
-                    className={clsx(
-                      "font-bold ",
-                      !model.available
-                        ? "opacity-30 cursor-not-allowed"
-                        : "text-blue-700"
-                    )}
-                  >
-                    {model.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+              <div className="relative">
+                <ChooseModel>
+                  <button className="flex items-center gap-4 px-4  h-9  p-2 rounded-md border border-primary font-semibold">
+                    <span>{chatmodel || "GPT 4.1"}</span>
+                    <ChevronDown className="" size={15} />
+                  </button>
+                </ChooseModel>
+              </div>
             </div>
           </div>
-          <button
-            className="font-bold cursor-pointer text-lg p-4 rounded-full px-10 bg-primary text-white shadow-xl"
-            onClick={handleCreate}
-          >
-            Start New Chat
-          </button>
+          <div>
+            <button
+              className="font-bold cursor-pointer text-lg p-4 rounded-full px-10 bg-primary text-white shadow-xl"
+              onClick={handleCreate}
+            >
+              Start New Chat
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,46 +1,24 @@
 "use client";
-import { AI_MODELS, ModelName } from "@/azure/models";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
-import clsx from "clsx";
 import { ChevronDown, MessagesSquare } from "lucide-react";
+import { ChooseModel } from "../elements/ChooseModel";
 
 export default function ChatHeader() {
   const chatmodel = useChatMessageStore((s) => s.chatmodel);
-  const updateChatModel = useChatMessageStore((s) => s.updateChatModel);
-
   return (
     <div className="flex items-center dark:bg-background3 justify-between gap-3 px-6 py-2 shadow">
       <h1 className="lg:text-xl flex items-center gap-4 text-md font-bold">
         <MessagesSquare className="h-5 w-5" /> <span>Chat</span>
       </h1>
       <div className="flex items-center justify-end px-6">
-        <label htmlFor="model-select" className="mr-2 text-sm font-medium">
-          Model:
-        </label>
+        <p className="mr-2 text-sm font-medium">Model:</p>
         <div className="relative">
-          <select
-            id="model-select"
-            value={chatmodel || ModelName.gpt_4_1}
-            onChange={(e) => updateChatModel(e.target.value)}
-            className="text-sm bg-white text-gray-500 appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
-          >
-            {AI_MODELS.map((model) => (
-              <option
-                key={model.value}
-                value={model.value}
-                disabled={!model.available}
-                className={clsx(
-                  "font-bold ",
-                  !model.available
-                    ? "opacity-30 cursor-not-allowed"
-                    : "text-blue-700"
-                )}
-              >
-                {model.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+          <ChooseModel>
+            <button className="flex items-center gap-4 px-4  h-9  p-2 rounded-md border border-primary font-semibold">
+              <span>{chatmodel || "GPT 4.1"}</span>
+              <ChevronDown className="" size={15} />
+            </button>
+          </ChooseModel>
         </div>
       </div>
     </div>

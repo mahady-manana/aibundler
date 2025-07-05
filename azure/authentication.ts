@@ -33,6 +33,15 @@ export const azureCrossModelAuth = (model: string) => {
 
   return client;
 };
+export async function azureSoraKeys() {
+  // You will need to set these environment variables or edit the following values
+  const endpoint = process.env.AZURE_SORA_ENDPOINT as string;
+  const apiKey = process.env.AZURE_SORA_API_KEY;
+  const apiVersion = "2025-01-01-preview";
+  const deployment = "sora"; // This must match your deployment name
+
+  return { endpoint, apiKey, deployment };
+}
 
 export const getDeployementNames = (model: string) => {
   switch (model) {

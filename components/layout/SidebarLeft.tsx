@@ -2,15 +2,7 @@
 import ChatList from "@/components/shared/ChatList";
 import { logout } from "@/services/auth/logout";
 import clsx from "clsx";
-import {
-  Image,
-  LucideLogOut,
-  MessagesSquare,
-  MoreHorizontal,
-  Sparkles,
-  Video,
-  Volume2,
-} from "lucide-react";
+import { LucideLogOut, MessagesSquare, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -34,31 +26,32 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
       href: `/app/chat`,
       available: true,
     },
-    { id: "image", label: "Create Image", icon: Image, href: `/app/image` },
-    {
-      id: "video",
-      label: "Create Short Video",
-      icon: Video,
-      href: `/app/video`,
-    },
-    {
-      id: "tts",
-      label: "Text to Speech",
-      icon: Volume2,
-      href: `/app/text-to-speech`,
-    },
+    // {
+    //   id: "video",
+    //   label: "Create Short Video",
+    //   icon: Video,
+    //   href: `/app/video`,
+    //   available: false,
+    // },
+    // { id: "image", label: "Create Image", icon: Image, href: `/app/image` },
+    // {
+    //   id: "tts",
+    //   label: "Text to Speech",
+    //   icon: Volume2,
+    //   href: `/app/text-to-speech`,
+    // },
     // {
     //   id: "stt",
     //   label: "Speech To Text",
     //   icon: Volume2,
     //   href: `./speech-to-text`,
     // },
-    {
-      id: "more",
-      label: "More AI Tools",
-      icon: MoreHorizontal,
-      href: `/app/more`,
-    },
+    // {
+    //   id: "more",
+    //   label: "More AI Tools",
+    //   icon: MoreHorizontal,
+    //   href: `/app/more`,
+    // },
   ];
 
   const handleLogout = async () => {
@@ -82,7 +75,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 py-4">
         <div className="space-y-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -92,11 +85,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
                 key={item.id}
                 href={item.href}
                 className={clsx(
-                  `w-full relative flex items-center px-4 py-1 rounded-md text-left transition-all duration-200 group no-underline ${
-                    isActive
-                      ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
-                      : "hover:bg-background2"
-                  }`,
+                  `w-full relative flex items-center px-4 py-1 rounded-md text-left transition-all duration-200 group no-underline ${"hover:bg-background2"}`,
                   !item.available
                     ? "opacity-30 cursor-not-allowed pointer-events-none"
                     : ""

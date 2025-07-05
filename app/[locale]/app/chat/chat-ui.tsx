@@ -1,6 +1,6 @@
 "use client";
-import { AI_MODELS } from "@/azure/models";
 import ChatHeader from "@/components/chat/ChatHeader";
+import { ChooseModel } from "@/components/elements/ChooseModel";
 import { useChat } from "@/hooks/useChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 import {
@@ -126,30 +126,16 @@ export default function ChatPage({ chatId }: NewChatProps) {
               </div>
               <p>AI can and will make mistakes. Check important info.</p>
               <div className="flex items-center  py-4">
-                <label
-                  htmlFor="model-select"
-                  className="mr-2 text-sm font-medium text-blue-700"
-                >
-                  Model:
-                </label>
+                <p className="mr-2 text-sm font-medium text-blue-700">Model:</p>
                 <div className="relative">
-                  <select
-                    id="model-select"
-                    value={chatmodel || "gpt-4.1"}
-                    onChange={(e) => updateChatModel(e.target.value)}
-                    className="text-sm appearance-none border border-blue-200 rounded-lg px-4 py-2 pr-8  text-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
-                  >
-                    {AI_MODELS.map((model) => (
-                      <option
-                        key={model.value}
-                        value={model.value}
-                        disabled={!model.available}
-                      >
-                        {model.name}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+                  <div className="relative">
+                    <ChooseModel>
+                      <button className="flex items-center gap-4 px-4  h-9  p-2 rounded-md border border-primary font-semibold">
+                        <span>{chatmodel || "GPT 4.1"}</span>
+                        <ChevronDown className="" size={15} />
+                      </button>
+                    </ChooseModel>
+                  </div>
                 </div>
               </div>
             </div>

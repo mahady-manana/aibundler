@@ -20,7 +20,7 @@ export const useChatMessageStore = create<ChatStoreType>()((set) => ({
   loading: false,
   summary: "",
   chatLit: [],
-  chatmodel: "",
+  chatmodel: "gpt-4.1",
   updateChatModel(model) {
     set({ chatmodel: model });
   },

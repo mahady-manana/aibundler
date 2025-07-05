@@ -126,3 +126,7 @@ body {
   max-width: 100%;
   overflow: auto;
 }
+
+button {
+  cursor: pointer;
+}
