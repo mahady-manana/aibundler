@@ -99,7 +99,6 @@ export const useChat = () => {
       // Handle non-200 responses
       if (!response.ok) {
         try {
-          const errorData = await response.json();
           throw new Error(`[Service interruption]`);
         } catch (e) {
           throw new Error(`[Service interruption]`);
@@ -301,6 +300,7 @@ export const useChat = () => {
         name,
       }),
     });
+
     await response.json();
     return { ok: true };
   };

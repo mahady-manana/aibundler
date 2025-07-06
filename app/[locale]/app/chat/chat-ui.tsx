@@ -1,18 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import ChatHeader from "@/components/chat/ChatHeader";
+import { ChatPromptInput } from "@/components/chat/ChatPromptInput";
 import { ChooseModel } from "@/components/elements/ChooseModel";
 import { useChat } from "@/hooks/useChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
-import {
-  ArrowDown,
-  ArrowUp,
-  ChevronDown,
-  Copy,
-  LoaderCircle,
-  Send,
-  Sparkles,
-} from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { ArrowDown, ArrowUp, ChevronDown, Copy, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighterPrisma } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -42,10 +36,7 @@ interface NewChatProps {
 const SyntaxHighlighter = SyntaxHighlighterPrisma as any;
 export default function ChatPage({ chatId }: NewChatProps) {
   const [input, setInput] = useState("");
-  const formRef = useRef<HTMLFormElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const chatmodel = useChatMessageStore((s) => s.chatmodel);
-  const updateChatModel = useChatMessageStore((s) => s.updateChatModel);
   const messages = useChatMessageStore((s) => s.messages);
   const loading = useChatMessageStore((s) => s.loading);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -53,37 +44,19 @@ export default function ChatPage({ chatId }: NewChatProps) {
   const [noChat, setNoChat] = useState(false);
   const { streamedChat, chat } = useChat();
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const inputValue = inputRef.current?.value;
-    if (!inputValue?.trim()) return;
+  const handleSend = async (text: string) => {
+    if (!text?.trim()) return;
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-    setInput(inputValue);
-    formRef.current?.reset();
-    await streamedChat(inputValue, chatId);
+    setInput(text);
+    await streamedChat(text, chatId);
   };
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content);
     toast.success("Copied", { position: "bottom-center" });
-  };
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      const inputValue = inputRef.current?.value;
-      if (!inputValue?.trim()) return;
-      messagesEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-      setInput(inputValue);
-      formRef.current?.reset();
-
-      streamedChat(inputValue, chatId);
-    }
   };
 
   const handleScrollDown = () => {
@@ -105,6 +78,19 @@ export default function ChatPage({ chatId }: NewChatProps) {
     }
   }, [Boolean(chat), messages.length]);
 
+  useEffect(() => {
+    if (chatId) {
+      const chatText = localStorage.getItem("chatText");
+      if (chatText) {
+        localStorage.removeItem("chatText");
+        handleSend(chatText);
+      }
+    }
+    return () => {
+      localStorage.removeItem("chatText");
+    };
+  }, [chatId]);
+
   return (
     <div className="flex flex-col h-full pb-8 shadow-lg overflow-hidden dark:bg-background2 bg-white">
       {/* Header */}
@@ -114,7 +100,7 @@ export default function ChatPage({ chatId }: NewChatProps) {
       {/* Messages */}
       <div className="px-4 overflow-y-auto relative">
         <div className="max-w-3xl mx-auto flex-1  px-4 py-6 space-y-4 relative">
-          {noChat ? (
+          {noChat && !messages.length ? (
             <div>
               <div className="flex items-center py-4">
                 <div className="flex items-end pr-8">
@@ -217,17 +203,7 @@ export default function ChatPage({ chatId }: NewChatProps) {
         </div>
       </div>
       {/* Input */}
-      <form
-        onSubmit={handleSend}
-        className="items-center relative gap-2 max-w-3xl mx-auto w-full px-2relative "
-        ref={formRef}
-      >
-        {loading ? (
-          <div className="flex gap-2 items-center">
-            <LoaderCircle size={15} className="animate-spin" />
-            <span className="font-bold text-gray-400">processing...</span>
-          </div>
-        ) : null}
+      <div className="items-center relative gap-2 max-w-3xl mx-auto w-full px-2relative ">
         {messages.length ? (
           <div className="absolute -top-15 -right-10 flex flex-col gap-1">
             <button
@@ -244,22 +220,11 @@ export default function ChatPage({ chatId }: NewChatProps) {
             </button>
           </div>
         ) : null}
-        <input
-          id="chat-input"
-          className="w-full flex-1 p-4 px-8 rounded-xl bg-background3 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          placeholder="What's in your mind..."
-          onKeyDown={handleKeyDown}
-          disabled={loading}
-          ref={inputRef}
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-12 h-8 absolute right-4 bottom-2 text-blue-500 bg-blue-50 flex items-center justify-center rounded-full font-semibold transition"
-        >
-          <Send className="w-5 h-5 text-blue-500"></Send>
-        </button>
-      </form>
+        <ChatPromptInput
+          loading={loading}
+          onSubmit={handleSend}
+        ></ChatPromptInput>
+      </div>
     </div>
   );
 }

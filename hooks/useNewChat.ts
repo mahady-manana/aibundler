@@ -3,10 +3,9 @@ import { useRouter } from "next/navigation";
 
 export const useNewChat = () => {
   const user = useUser((s) => s.user);
-  console.log({ user });
 
   const { push } = useRouter();
-  const createChat = async () => {
+  const createChat = async (redirect = true) => {
     try {
       const response = await fetch("/api/user/chat", {
         method: "POST",
@@ -19,6 +18,9 @@ export const useNewChat = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        if (!redirect) {
+          return data;
+        }
         if (data && data.id) {
           push("/app/chat/" + data.id);
         }

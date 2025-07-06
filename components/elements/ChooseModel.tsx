@@ -2,7 +2,7 @@
 import { AI_MODELS } from "@/azure/models";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 import clsx from "clsx";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,9 @@ export const ChooseModel: FC<ChooseModel> = ({
   const [open, setOpen] = useState(false);
   const currentmodel = useChatMessageStore((s) => s.chatmodel);
   const updateChatModel = useChatMessageStore((s) => s.updateChatModel);
+  const modelName = useMemo(() => {
+    return AI_MODELS.find((m) => m.value === currentmodel)?.name || "GPT 4.1";
+  }, [currentmodel]);
   return (
     <Dialog open={open} onOpenChange={(o) => setOpen(o)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -59,7 +62,7 @@ export const ChooseModel: FC<ChooseModel> = ({
                     height={20}
                     className="h-5 w-5"
                   />
-                  <p className="font-medium">{model.name}</p>
+                  <p className="font-medium">{modelName}</p>
                 </div>
               );
             })}

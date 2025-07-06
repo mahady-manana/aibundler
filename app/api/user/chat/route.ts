@@ -40,6 +40,7 @@ export const PUT = async (request: Request) => {
         name: name,
       },
     });
+
     return NextResponse.json(saveChat);
   } catch (error) {
     return NextResponse.json({ error: "Error" }, { status: 400 });

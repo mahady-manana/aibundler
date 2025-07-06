@@ -13,6 +13,7 @@ interface ChatStoreType {
   updateSummary: (s: string) => void;
   setLoading: (b: boolean) => void;
   updateMessages: (messages: ChatMessage[]) => void;
+  resetChat: () => void;
 }
 
 export const useChatMessageStore = create<ChatStoreType>()((set) => ({
@@ -35,5 +36,11 @@ export const useChatMessageStore = create<ChatStoreType>()((set) => ({
   },
   updateMessages(messages) {
     set({ messages: messages });
+  },
+  resetChat() {
+    set({
+      messages: [],
+      summary: "",
+    });
   },
 }));

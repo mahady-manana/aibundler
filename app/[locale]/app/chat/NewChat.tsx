@@ -1,28 +1,24 @@
 "use client";
 import ChatHeader from "@/components/chat/ChatHeader";
+import { ChatPromptInput } from "@/components/chat/ChatPromptInput";
 import { ChooseModel } from "@/components/elements/ChooseModel";
 import { useNewChat } from "@/hooks/useNewChat";
 import { useChatMessageStore } from "@/stores/chatmessages.store";
 import { ChevronDown, Sparkles } from "lucide-react";
-
-const customPreStyle = {
-  border: "1px solid #ccc", // Add a border
-  borderRadius: "5px",
-  padding: "1.5em",
-};
-
-const OPENAI_MODELS = [
-  { label: "GPT-3.5 Turbo", value: "gpt-3.5-turbo" },
-  { label: "GPT-4", value: "gpt-4" },
-  { label: "GPT-4o", value: "gpt-4o" },
-];
+import { useRouter } from "next/navigation";
 
 export default function NewChatPage() {
   const chatmodel = useChatMessageStore((s) => s.chatmodel);
+  const resetChat = useChatMessageStore((s) => s.resetChat);
   const { createChat } = useNewChat();
-
-  const handleCreate = async () => {
-    await createChat();
+  const { push } = useRouter();
+  const handleCreate = async (input: string) => {
+    resetChat();
+    const chat = await createChat(false);
+    localStorage.setItem("chatText", JSON.stringify(input));
+    if (chat?.id) {
+      push("/app/chat/" + chat?.id + "/?q=newchat");
+    }
   };
 
   return (
@@ -56,12 +52,7 @@ export default function NewChatPage() {
             </div>
           </div>
           <div>
-            <button
-              className="font-bold cursor-pointer text-lg p-4 rounded-full px-10 bg-primary text-white shadow-xl"
-              onClick={handleCreate}
-            >
-              Start New Chat
-            </button>
+            <ChatPromptInput onSubmit={handleCreate}></ChatPromptInput>
           </div>
         </div>
       </div>

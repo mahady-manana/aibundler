@@ -110,6 +110,9 @@ body {
   margin-bottom: 10px;
   font-weight: bold;
 }
+.markdown-content img {
+  border-radius: 15px;
+}
 .markdown-content .thinking {
   :where(& > :not(:last-child)) {
     --tw-space-y-reverse: 0;
