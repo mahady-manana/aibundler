@@ -93,13 +93,10 @@ export default function ChatPage({ chatId }: NewChatProps) {
 
   return (
     <div className="flex flex-col h-full pb-8 shadow-lg overflow-hidden dark:bg-background2 bg-white">
-      {/* Header */}
       <ChatHeader></ChatHeader>
-      {/* Model Selector */}
 
-      {/* Messages */}
-      <div className="px-4 overflow-y-auto relative">
-        <div className="max-w-3xl mx-auto flex-1  px-4 py-6 space-y-4 relative">
+      <div className="px-4 overflow-y-auto relative py-4 ">
+        <div className="max-w-3xl mx-auto flex-1  px-4 py-6 space-y-4 relative shadow border border-background2">
           {noChat && !messages.length ? (
             <div>
               <div className="flex items-center py-4">

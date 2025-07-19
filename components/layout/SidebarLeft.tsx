@@ -60,7 +60,7 @@ const SidebarLeft: React.FC<SidebarProps> = ({ activePage }) => {
   };
 
   return (
-    <div className="lg:block hidden w-65 dark:bg-background bg-white flex flex-col h-full shadow-sm border-r dark:border-none border-gray-200">
+    <div className="lg:block hidden w-65  dark:bg-background bg-white flex flex-col h-full pb-40 overflow-y-auto scrollbar-thin shadow-sm border-r dark:border-none border-gray-200">
       {/* Logo */}
       <div className="p-6">
         <Link href="/" className="flex items-center space-x-3">

@@ -38,31 +38,33 @@ export const ChatPromptInput: FC<ChatPromptInputProps> = ({
     }
   };
   return (
-    <div className="rounded-xl bg-background3 p-2">
-      <form className="relative" ref={formRef} onSubmit={handleSubmit}>
-        <input
-          id="chat-input"
-          className="w-full flex-1 p-4 rounded-xl focus:outline-none"
-          placeholder="What's in your mind..."
-          ref={refInput}
-          onKeyDown={handleKeyDown}
-          disabled={loading}
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-12 h-8 absolute right-4 bottom-0 text-blue-500 bg-background2 flex items-center justify-center rounded-full font-semibold transition"
-        >
-          <Send className="w-5 h-5 text-blue-500"></Send>
-        </button>
-      </form>
-      <div className="flex items-center pt-2">
-        <ChooseModel>
-          <button className="flex items-center gap-2 opacity-50 text-sm font-semibold px-4 rounded-md">
-            <Component size={15}></Component>
-            <span>{modelName}</span>
+    <div className="px-4">
+      <div className="rounded-xl bg-background3 p-2">
+        <form className="relative" ref={formRef} onSubmit={handleSubmit}>
+          <input
+            id="chat-input"
+            className="w-full flex-1 p-4 rounded-xl focus:outline-none"
+            placeholder="What's in your mind..."
+            ref={refInput}
+            onKeyDown={handleKeyDown}
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-12 h-8 absolute right-4 bottom-0 text-blue-500 bg-background2 flex items-center justify-center rounded-full font-semibold transition"
+          >
+            <Send className="w-5 h-5 text-blue-500"></Send>
           </button>
-        </ChooseModel>
+        </form>
+        <div className="flex items-center pt-2">
+          <ChooseModel>
+            <button className="flex items-center gap-2 opacity-50 text-sm font-semibold px-4 rounded-md">
+              <Component size={15}></Component>
+              <span>{modelName}</span>
+            </button>
+          </ChooseModel>
+        </div>
       </div>
     </div>
   );

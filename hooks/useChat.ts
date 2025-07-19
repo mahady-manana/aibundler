@@ -16,68 +16,6 @@ export const useChat = () => {
   const chatList = useChatMessageStore((s) => s.chatLit);
   const { loadChatList } = useChatList();
   const streamedChat = async (input: string, chatId: string) => {
-    // try {
-    //   setLoading(true);
-    //   const response = await fetch(getChatEndpoints(chatmodel), {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       messages: [
-    //         ...messages.filter((m) => !m.summarized),
-    //         { role: "user", content: input, type: "text" },
-    //       ],
-    //       summary,
-    //     }),
-    //   });
-    //   let keepChat = "";
-    //   const reader = response?.body?.getReader();
-    //   const decoder = new TextDecoder("utf-8");
-    //   let done = false;
-    //   let f = "";
-    //   while (!done) {
-    //     const { value, done: readerDone } = (await reader?.read()) || {};
-    //     done = readerDone || false;
-    //     const chunk = decoder.decode(value, { stream: true });
-    //     if (chunk && typeof chunk === "string") {
-    //       const ch = chunk.replaceAll('"', "");
-    //       f = f + ch;
-    //       keepChat = keepChat + ch;
-    //       setChat((prev) => prev + ch);
-    //     }
-    //   }
-
-    //   if (done && f?.length) {
-    //     const allmessages: ChatMessage[] = [
-    //       ...messages,
-    //       { role: "user", content: input, type: "text" },
-    //       { role: "assistant", content: keepChat, type: "text" },
-    //     ];
-    //     updatesChatStore(allmessages);
-    //     if (allmessages.filter((m) => !m.summarized).length > 4) {
-    //       summarizeGpt(allmessages, chatId);
-    //     } else {
-    //       updateCurrentChat({
-    //         summary: summary,
-    //         id: chatId,
-    //         messages: [
-    //           ...allmessages.map((m) => {
-    //             delete m.summarized;
-    //             return m;
-    //           }),
-    //         ],
-    //       });
-    //     }
-    //     setChat("");
-    //     setLoading(false);
-    //   }
-    //   setLoading(false);
-    //   return;
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.log(error);
-    // }
     try {
       setLoading(true);
       const abortController = new AbortController();

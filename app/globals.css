@@ -133,3 +133,40 @@ body {
 button {
   cursor: pointer;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 0px;
+  border-radius: 5px;
+  height: 2px;
+}
+
+.scrollbar-hoz::-webkit-scrollbar {
+  border-radius: 5px;
+  height: 10px;
+}
+.scrollbar-hoz::-webkit-scrollbar-thumb {
+  background: #44444465;
+  border-radius: 555px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #c8c8c88a;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #88888880;
+}
+
+.scrollbar-light::-webkit-scrollbar-track {
+  background-color: #ececec86;
+}
+.scrollbar-light::-webkit-scrollbar-thumb {
+  background-color: #c8c8c896;
+}
